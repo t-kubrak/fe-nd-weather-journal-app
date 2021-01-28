@@ -9,13 +9,29 @@ let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 // GET request
-const getData = async (baseUrl, apiKey, zipCode) =>{
+const getWeatherData = async (baseUrl, apiKey, zipCode) =>{
     const response = await fetch(`${baseUrl}${zipCode},us&appid=${apiKey}`);
 
     try {
         return await response.json()
+    } catch (error) {
+        console.log("error", error);
     }
-    catch(error) {
+};
+
+const postData = async (url = '', data = {}) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+
+    try {
+        return await response.json();
+    } catch (error) {
         console.log("error", error);
     }
 };
@@ -23,5 +39,14 @@ const getData = async (baseUrl, apiKey, zipCode) =>{
 // Event listeners
 generateBtn.addEventListener('click', (e) => {
     const zipCode = document.getElementById('zip').value;
-    getData(baseUrl, apiKey, zipCode);
+    const feelings = document.getElementById('feelings').value;
+
+    getWeatherData(baseUrl, apiKey, zipCode)
+        .then((weatherData) => {
+            postData('/add', {
+                temperature : weatherData.main.temp,
+                date : newDate,
+                userResponse : feelings
+            })
+        });
 });

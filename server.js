@@ -33,9 +33,7 @@ app.get('/data', (req, res) => {
 });
 
 app.post('/add', (req, res) => {
-    projectData.push({
-        temperature : req.body.temperature,
-        date: req.body.date,
-        userResponse : req.body.userResponse
-    });
+    projectData.temperature = req.body.temperature;
+    projectData.date = req.body.date;
+    projectData.userResponse = req.body.userResponse;
 });
