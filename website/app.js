@@ -8,7 +8,17 @@ const generateBtn = document.getElementById('generate');
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
-// GET request
+// GET requests
+const getServerData = async (url = '') =>{
+    const response = await fetch(url);
+
+    try {
+        return await response.json()
+    } catch (error) {
+        console.log("error", error);
+    }
+};
+
 const getWeatherData = async (baseUrl, apiKey, zipCode) =>{
     const response = await fetch(`${baseUrl}${zipCode},us&appid=${apiKey}`);
 
@@ -19,7 +29,7 @@ const getWeatherData = async (baseUrl, apiKey, zipCode) =>{
     }
 };
 
-const postData = async (url = '', data = {}) => {
+const postDataToTheServer = async (url = '', data = {}) => {
     const response = await fetch(url, {
         method: 'POST',
         credentials: 'same-origin',
@@ -43,7 +53,7 @@ generateBtn.addEventListener('click', (e) => {
 
     getWeatherData(baseUrl, apiKey, zipCode)
         .then((weatherData) => {
-            postData('/add', {
+            postDataToTheServer('/add', {
                 temperature : weatherData.main.temp,
                 date : newDate,
                 userResponse : feelings
