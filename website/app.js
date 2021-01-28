@@ -60,15 +60,13 @@ generateBtn.addEventListener('click', (e) => {
                 temperature : weatherData.main.temp,
                 date : newDate,
                 userResponse : feelings
-            })
-                .then(() => {
-                    getServerData('/data')
-                        .then((data) => {
-                            tempPlaceholder.textContent = data.temperature;
-                            datePlaceholder.textContent = data.date;
-                            contentPlaceholder.textContent = data.userResponse;
-                            console.log(data);
-                        })
-                });
+            });
+
+            getServerData('/data')
+                .then((data) => {
+                    tempPlaceholder.textContent = data.temperature;
+                    datePlaceholder.textContent = data.date;
+                    contentPlaceholder.textContent = data.userResponse;
+                })
         });
-    });
+});
