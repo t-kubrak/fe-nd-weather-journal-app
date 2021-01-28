@@ -1,2 +1,2 @@
-# fe-nd-weather-journal-app
-Weather-Journal App
+# Weather-Journal App
+
