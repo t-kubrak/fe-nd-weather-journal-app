@@ -3,6 +3,9 @@ const apiKey = 'daed44c51ba32e2da425955ad7492dd2';
 const baseUrl = `http://api.openweathermap.org/data/2.5/weather?zip=`;
 
 const generateBtn = document.getElementById('generate');
+const tempPlaceholder = document.getElementById('temp');
+const datePlaceholder = document.getElementById('date');
+const contentPlaceholder = document.getElementById('content');
 
 // Create a new date instance dynamically with JS
 let d = new Date();
@@ -13,7 +16,7 @@ const getServerData = async (url = '') =>{
     const response = await fetch(url);
 
     try {
-        return await response.json()
+        return await response.json();
     } catch (error) {
         console.log("error", error);
     }
@@ -23,7 +26,7 @@ const getWeatherData = async (baseUrl, apiKey, zipCode) =>{
     const response = await fetch(`${baseUrl}${zipCode},us&appid=${apiKey}`);
 
     try {
-        return await response.json()
+        return await response.json();
     } catch (error) {
         console.log("error", error);
     }
@@ -58,5 +61,14 @@ generateBtn.addEventListener('click', (e) => {
                 date : newDate,
                 userResponse : feelings
             })
+                .then(() => {
+                    getServerData('/data')
+                        .then((data) => {
+                            tempPlaceholder.textContent = data.temperature;
+                            datePlaceholder.textContent = data.date;
+                            contentPlaceholder.textContent = data.userResponse;
+                            console.log(data);
+                        })
+                });
         });
-});
+    });
